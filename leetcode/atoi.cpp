@@ -30,3 +30,7 @@ public:
         
     }
 };
+
+//  O(len(str))
+//  Runtime: 8 ms, faster than 33.44% of C++ online submissions for String to Integer (atoi).
+//  Memory Usage: 6.2 MB, less than 78.86% of C++ online submissions for String to Integer (atoi).
