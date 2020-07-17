@@ -32,7 +32,8 @@ public:
 
 int main()
 {
-    vector<int> nums{1};
+    // This part is just for input data
+    vector<int> nums{1,1,1,1,2,2,2,3,3,4};
     int k;
     cin>>k;
     Solution a;
