@@ -6,3 +6,12 @@ public class Solution {
         zigzag(root, 0);
         return new ArrayList<List<Integer>>(maps.values());
     }
+
+     public void zigzag(TreeNode node, int level){
+        if(node == null){
+            return;
+        }
+        
+        if(maps.containsKey(level) == false){
+            maps.put(level, new ArrayList<Integer>());
+        }
