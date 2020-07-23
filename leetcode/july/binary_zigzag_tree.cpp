@@ -15,3 +15,13 @@ public class Solution {
         if(maps.containsKey(level) == false){
             maps.put(level, new ArrayList<Integer>());
         }
+        if(level % 2 == 1){
+                maps.get(level).add(0, node.val);
+            }else{
+                maps.get(level).add(node.val);
+            }
+            
+            zigzag(node.left, level + 1);
+            zigzag(node.right, level + 1);
+        }
+}
