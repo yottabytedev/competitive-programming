@@ -31,48 +31,41 @@ const int  INFi  =  0x7f7f7f7f;
  
 int test = 1, n;
 
-ll getPairsCount(vll arr, ll n, ll sum) 
-{ 
-    ll count = 0; // Initialize result 
-  
-    // // Consider all possible pairs and check their sums 
-    // for (ll i=0; i<n; i++) 
-    //     for (ll j=i+1; j<n; j++) 
-    //         if (arr[i]+arr[j] == sum) 
-    //             count++; 
-
-	vll visited(n,0);
-	for(ll i=0;i<n-1;i++){
-		for(ll j=i+1;j<n;j++){
-			if(arr[i]+arr[j]==sum && visited[i]==0 && visited[j]==0){
-				count++;
-				visited[i]=1;
-				visited[j]=1;
-			//cout<<arr[i]<< " "<<arr[j]<<" "<<count<<endl;
-
-			}
-		}
-	}
-  
-    return count; 
-} 
-
 void solve(){
 	cin>>n;
-	vll W;
-	W.resize(n);
+	vll W(n);
 	for(auto &w: W){
 		cin>>w;
 	}
 	sort(W.begin(),W.end());
 
-	ll minsum=W[0]+W[1];
-	ll maxsum=W[n-1]+W[n-2];
-	ll result=INT_MIN;
-	for(ll i=minsum;i<=maxsum;i++){
-		result=max(result,getPairsCount(W,n,i));
-	}
-	deb1(result);
+	int best = 0;
+	for (int team = 0; team <= 2 * n; team++) {
+        int count = 0;
+        int a = 0, b = n - 1;
+ 
+        while (a < b) {
+            if (W[a] + W[b] == team) {
+                count++;
+                a++;
+                b--;
+                continue;
+            }
+ 
+            if (W[a] + W[b] < team) {
+                a++;
+                continue;
+            }
+ 
+            if (W[a] + W[b] > team) {
+                b--;
+                continue;
+            }
+        }
+ 
+        best = max(best, count);
+    }
+	deb1(best);
 }
  
 int main(){
