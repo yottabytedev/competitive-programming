@@ -9,40 +9,33 @@ int main() {
 		int n,k;
 		cin>>n>>k;
 		vector<int> a(n);
-		int tables=1,fight=0;
-		if(k>=n){
-			map<int,int> A;
-			
-			for(auto &i: a){
-				cin>>i;
-				A[i]++;
-				if(A[i]==2) fight+=2;
-				if(A[i]>2) fight++;
-			}
-		} else {
-			map<int,int> A;
-			
-			for(auto &i:a){
-				cin>>i;
-				{
-					if(A[i]==0) A[i]=1;
-					else {
-						A[i]++;
-						if(A[i]==2) fight+=2;
-						else fight++;
-					}
-					
-					if(A[i]>k) {
-						tables++;
-						fight = max(0,fight-2);
-						A.clear();
-						A[i]=1;
-					}
-				}
-			}
+		for(int &i:a){
+			cin>>i;
 		}
-		
-		cout<<(k*tables + fight)<<endl;
+		int dp[n+1]={0};
+	    for(int i=0;i<n;i++)
+	    {
+	        int fre[101];
+	        memset(fre,0,sizeof(fre));
+	        int arg=0;
+	        int cur=INT_MAX;
+	        for(int j=i;j>=0;j--)
+	        {
+	            fre[a[j]]++;
+	            if(fre[a[j]]==2)
+	            arg+=2;
+	            else if(fre[a[j]]>2)
+	            arg++;
+	            
+	            int val=k+arg;
+	            if(j-1>=0)
+	            cur=min(cur,val+dp[j-1]);
+	            else
+	            cur=min(cur,val);
+	        }
+	        dp[i]=cur;
+	    }
+	    cout<<dp[n-1]<<endl;
 	}
 	return 0;
 }
