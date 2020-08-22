@@ -1,24 +1,19 @@
 #include <bits/stdc++.h>
-using namespace std;
 
-int main(){
-    int t;
-    cin>>t;
-    for(int i=1;i<=t;i++){
-        long long N,B;
-        cin>>N>>B;
-        vector<int> A(N);
-        for(int &a:A){
-            cin>>a;
+using namespace std ;
+int main() {
+    int t ; cin >> t ;
+    for(int cs = 1 ; cs <= t ; cs ++) {
+        int n , b , cnt = 0 ; cin >> n >> b ;
+        vector<int> a(n) ; for(int i = 0 ; i < n ; i ++) cin >> a[i] ;
+        sort(a.begin(), a.end()) ;
+        for(int i = 0 ; i < n ; i ++) {
+            if(a[i] > b) break ;
+            else {
+                b -= a[i] ;
+                cnt ++ ;
+            }
         }
-        sort(A.begin(),A.end());
-        long long sum = 0;
-        int index = 0;
-        while(sum+A[index]<=B){
-            sum+=A[index++];
-        }
-    
-        cout<<"Case #"<<i<<" "<<index<<endl;
+        printf("Case #%d: %d\n", cs, cnt) ;
     }
-    return 0;
 }
