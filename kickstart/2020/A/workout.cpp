@@ -13,28 +13,32 @@ int main(){
         for(int i=1;i<=N;i++){
             cin>>M[i];
             if(i>1){
-                dp[i-1] = M[i] - M[i-1];
+                dp[i-2] = M[i] - M[i-1];
             }
         }
 
-        long long initial = 1, end = 1e+9;
-        long long doptimal = (end+initial)/2;
         memset(k,0,sizeof(k[0])*N);
-        long long ksum = INT_MAX;
-        while(ksum>K){
+        long long initial = 1, end = *max_element(M+1,M+N+1);
+        long long doptimal = (end+initial)/2;
+        long long caseend = end;
+        long long ksum = INT_MAX, answer = INT_MAX;
+
+        for(long long c=0; c < log(caseend)+1; c++){
             ksum = 0;
-            for(int i=0; i<N; i++){
+            for(int i=0; i<N-1; i++){
                 k[i] = ceil(dp[i]/doptimal) - 1;
-                ksum += k[i];
+                ksum += (k[i]>0?k[i]:0);
             }
+            cout<<"doptimal "<<doptimal<< " ksum "<<ksum<<endl;
             if(ksum>K){
                 initial = doptimal;
             } else {
-                break;
+                end = doptimal;
+                answer = min(answer,doptimal);
             }
             doptimal = (initial + end)/2;
         }
 
-        printf("Case #%d: %d\n",cs,doptimal);
+        printf("Case #%d: %d\n",cs,answer);
     }
 }
