@@ -341,14 +341,15 @@ void solve(){
 	}
 
 	auto i = lca.get_diameter();
-	
+	int diameter = i.first;
+    lca.build();
+
+    int leftnode = i.second.first;
+    int rightnode = i.second.second;
 	// cout<<i.first<<" "<<i.second.first<<" "<<i.second.second<<endl;
-	ll diameter = i.first;
-	For(i,n-2){
-		deb1(diameter+1);
+	For(i,n){
+		cout<<max(diameter,max(lca.get_dist(i,leftnode)+1,lca.get_dist(i,rightnode)+1))<<endl;
 	}
-	deb1(diameter)
-	deb1(diameter+1)
 }
  
 int main(){
