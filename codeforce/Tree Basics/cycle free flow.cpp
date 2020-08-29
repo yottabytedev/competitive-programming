@@ -1,4 +1,3 @@
-#define NDEBUG
 #include <bits/stdc++.h>
  
 using namespace std;
@@ -323,57 +322,30 @@ const ll   mod   =  998244353;
 const ll   INF   =  0x7f7f7f7f7f7f7f7f;
 const int  INFi  =  0x7f7f7f7f;
  
-int test = 1;
-
-struct Weight{
-	int n = 0;
-	map<pair<int,int>,long long> W;
-
-	Weight(int _n){
-		n = _n;
-	}
-
-	void add_weight(int u, int v, long long w){
-		// W.insert(make_pair(make_pair(u,v),w));
-		// W.insert(make_pair(make_pair(v,u),w));
-        W[make_pair(u,v)] = w;
-        W[make_pair(v,u)] = w;
-	}
-
-	long long weight_value(int u, int v){
-		return (W[make_pair(u,v)]);
-	}
-
-};
+int test = 1, n, m, u, v, q, a, b, fa, fb, j;
+ll w, mn, W[1][1];
+vector<long long> path;
 
 void solve(){
-	int n,m;
 	cin >> n >> m;
 
 	LCA lca(n);
-	Weight weight(m);
-	map<pair<int,int>, bool> visited;
-
+    memset(W,0,sizeof(W)*n*n);
+    // long long W[n][n] = {0};
 
 	For(i,m){
-		int u,v;
-		ll w;
-		cin >> u >> v >> w;
+		scanf("%d %d %lld",&u,&v,&w);
 		u--; v--;
 		lca.add_edge(u,v);
-		weight.add_weight(u,v,w);
-		visited[make_pair(u,v)] = false;
-		visited[make_pair(v,u)] = false;
+		W[u][v] = w;
+		W[v][u] = w;
 	}
 
-    cout<<"Weight:"<<weight.weight_value(4,3);
 	lca.build();
 
-	int q;
 	cin>>q;
 
 	For(i,q){
-		int a,b;
 		cin >> a >> b;
 		a--; b--;
 
@@ -421,33 +393,33 @@ void solve(){
 		// 	}
 		// }
 
-		vector<int> path;
-		int fa = lca.first_occurrence[a];
-		int fb = lca.first_occurrence[b];
-		if(fa<fb){
-            
-		} else {
-            swap(fa,fb);
-		}
-        for(int j=fa;j<=fb;j++){
+		fa = lca.first_occurrence[a];
+		fb = lca.first_occurrence[b];
+        if(fa>fb) {swap(fa,fb);}
+
+        for(j=fa;j<=fb;j++){
             if(find(path.begin(),path.end(),lca.euler[j]) != path.end()){
-                auto temp = remove(path.begin(),path.end(),lca.euler[j]);
-                path.erase(temp,temp+1);
+                path.pop_back();
             } else {
-                path.emplace_back(lca.euler[j]);
+                path.push_back(lca.euler[j]);
             }
         }
 		
-        long long mn = INT_MAX;
-        for(int j=1;j<path.size()-1;j++){
-            mn = min(mn, weight.weight_value(path[j],path[j-1]));
+        mn = INF;
+        for(j=1;j<path.size();j++){
+            if(W[path[j]][path[j-1]]  < mn){
+                mn = W[path[j]][path[j-1]];
+            }
         }
+        
+        path.clear();
+
         cout<<mn<<endl;
 	}
 }
  
 int main(){
-	GODSPEED;
+	// GODSPEED;
 	//cin>>test;
 	for(int i = 1; i <= test; i++){
 		solve();
