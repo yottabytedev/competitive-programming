@@ -322,33 +322,58 @@ const ll   mod   =  998244353;
 const ll   INF   =  0x7f7f7f7f7f7f7f7f;
 const int  INFi  =  0x7f7f7f7f;
  
-int test = 1, n, m, u, v, q, a, b, fa, fb, j;
-ll w, mn, W[1][1];
-vector<long long> path;
+int test = 1;
+
+// vector<long long> path;
 
 void solve(){
+	int n, m, u, v, q, a, b, fa, fb, j;
+	ll w, mn;
 	cin >> n >> m;
 
 	LCA lca(n);
-    memset(W,0,sizeof(W)*n*n);
+
+    vector<vector<pair<int,ll>>> W(n);
+    // map<pair<int,int>,long long> W;
+    // ll W[m][3] = {0};
+	// ll W[n][n] = {0};
+    // memset(W,0,sizeof(W[0][0])*n*n);
     // long long W[n][n] = {0};
 
 	For(i,m){
 		scanf("%d %d %lld",&u,&v,&w);
 		u--; v--;
 		lca.add_edge(u,v);
-		W[u][v] = w;
-		W[v][u] = w;
+        W.at(u).push_back(make_pair(v,w));
+        W.at(v).push_back(make_pair(u,w));
+        // W.insert({{u,v},w});
+        // W.insert({{v,u},w});
+        // W[i][0] = u;
+        // W[i][1] = v;
+        // W[i][2] = w;
+
+		// W[u][v] = w;
+		// W[v][u] = w;
 	}
 
 	lca.build();
 
 	cin>>q;
 
+    ll answers[q][3];
+    bool flag = false;
+
 	For(i,q){
 		cin >> a >> b;
 		a--; b--;
 
+        For(ans,i){
+            if((answers[ans][0] == a && answers[ans][1] == b) || (answers[ans][1] == a && answers[ans][0] == b)){
+                cout<<answers[ans][2]<<endl;
+                flag = true;
+                break;
+            }
+        }
 		// 1st solution
 		// vll result;
 		// map<pair<int,int>,bool> v = visited;
@@ -393,28 +418,50 @@ void solve(){
 		// 	}
 		// }
 
-		fa = lca.first_occurrence[a];
-		fb = lca.first_occurrence[b];
-        if(fa>fb) {swap(fa,fb);}
+        if(!flag){
+            fa = lca.first_occurrence[a];
+            fb = lca.first_occurrence[b];
+            if(fa>fb) {swap(fa,fb);}
 
-        for(j=fa;j<=fb;j++){
-            if(find(path.begin(),path.end(),lca.euler[j]) != path.end()){
-                path.pop_back();
-            } else {
-                path.push_back(lca.euler[j]);
+            vector<int> path;
+
+            for(j=fa;j<=fb;j++){
+                if(find(path.begin(),path.end(),lca.euler[j]) != path.end()){
+                    path.pop_back();
+                } else {
+                    path.push_back(lca.euler[j]);
+                }
             }
+            
+            mn = INF;
+            for(j=1;j<path.size();j++){
+                ll temp;
+                for(auto k:W[path[j-1]]){
+                    if(k.first == path[j])
+                        {
+                            temp = k.second;
+                            break;
+                        }
+                }
+                // ll temp = W[{path[j-1],path[j]}];
+                // For(k,m){
+                //     if((W[k][0] == path[j-1] && W[k][1] == path[j]) || (W[k][0] == path[j] && W[k][1] == path[j-1])){
+                //         temp = W[k][2];
+                //         break;
+                //     }
+                // }
+                if(temp  < mn){
+                    mn = temp;
+                }
+            }
+            
+            cout<<mn<<endl;
+            answers[i][0] = a;
+            answers[i][1] = b;
+            answers[i][2] = mn;
         }
+        flag = false;
 		
-        mn = INF;
-        for(j=1;j<path.size();j++){
-            if(W[path[j]][path[j-1]]  < mn){
-                mn = W[path[j]][path[j-1]];
-            }
-        }
-        
-        path.clear();
-
-        cout<<mn<<endl;
 	}
 }
  
