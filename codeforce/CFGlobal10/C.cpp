@@ -29,13 +29,12 @@ const ll   mod   =  998244353;
 const ll   INF   =  0x7f7f7f7f7f7f7f7f;
 const int  INFi  =  0x7f7f7f7f;
  
-int test = 1, n;
+int test = 1, n, B[N];
 vll res;
 
-bool nondec(vll A){
+bool isNotNonDec(vll A){
     for(ll i=0; i<(A.size()-1); i++){
         if(A[i+1]<A[i]) return true;
-        cout<<i<<" "<<endl;
     }
     return false;
 }
@@ -54,25 +53,10 @@ void solve(){
     for(auto &a:A){
         cin>>a;
     }
+
     ll result = 0;
-    int s=1,e=n-1;
-    ll mn = minelement(A);
-    cout<<mn;
-    while(nondec(A)){
-        while(A[s]!=mn){
-            s++;
-        }
-        e=s;
-        while(A[s]==mn){
-            e++;
-        }
-        for(ll i=s;i<=e;i++){
-            A[i]++;
-        }
-        result++;
-        s=0;
-        mn = minelement(A);
-        cout<<"Result:"<<result<<" mn:"<<mn<<endl;
+    for(int i=1;i<n;i++){
+        result += max(A[i-1]-A[i],0LL);
     }
     deb1(result)
 }
