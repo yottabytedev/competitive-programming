@@ -32,18 +32,6 @@ const int  INFi  =  0x7f7f7f7f;
 int test = 1, n;
 vll res;
 
-int password(vector<ll> A){
-    int l = A.size();
-    for(int i=0;i<l-1;i++){
-        if(A[i]!=A[i+1]) {
-            A[i] += A[i+1];
-            A.erase(A.begin() + i + 1);
-            l = min(l,password(A));
-        }
-    }
-    return l;
-}
-
 void solve(){
 	
 	cin>>n;
@@ -51,7 +39,11 @@ void solve(){
     for(auto &a:A){
         cin>>a;
     }
-    cout<<password(A)<<endl;
+    
+    if(min_element(A.begin(),A.end()) == max_element(A.begin(),A.end()))
+        deb1(n)
+    else 
+        deb1(1)
 	
 }
  
